@@ -1,0 +1,29 @@
+ext {
+    androidConfig = [
+            compileSdkVersion : 28,
+            minSdkVersion     : 21,
+            targetSdkVersion  : 28,
+            versionCode: 1,
+            versionName: "1.0.0",
+    ]
+    firebase = [
+            core       : "16.0.4",
+            messaging  : "17.3.4",
+            performance: "16.2.0",
+            crashlytics: "2.9.5"
+    ]
+    dependencie = [
+            AndroidX        : "1.0.0",
+            Architecture    : "2.0.0",
+            ConstraintLayout: "1.1.1",
+            OkHttp3          : "3.11.0",
+            Retrofit2        : "2.5.0",
+            RxJava2          : "2.2.4",
+            RxAndroid       : "2.0.2",
+            Glide           : "4.8.0",
+            ZxingEmbedded   : "3.6.0",
+
+            junit           : "5.2.0",
+            robolectric     : "3.8",
+    ]
+}

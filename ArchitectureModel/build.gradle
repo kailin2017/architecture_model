@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+apply from: "config.gradle"
+
+android {
+    compileSdkVersion androidConfig.compileSdkVersion
+    defaultConfig {
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.versionCode
+        versionName androidConfig.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // android support
+    api "com.google.android.material:material:$dependencie.AndroidX"
+    api "androidx.recyclerview:recyclerview:$dependencie.AndroidX"
+    api "androidx.constraintlayout:constraintlayout:$dependencie.ConstraintLayout"
+    // Architecture lifecycle
+    api "androidx.lifecycle:lifecycle-extensions:$dependencie.Architecture"
+    api "androidx.lifecycle:lifecycle-common-java8:$dependencie.Architecture"
+    // Okhttp
+    api "com.squareup.okhttp3:okhttp:$dependencie.OkHttp3"
+    api "com.squareup.okhttp3:logging-interceptor:$dependencie.OkHttp3"
+    api "com.squareup.okhttp3:okhttp-urlconnection:$dependencie.OkHttp3"
+    // retrofit
+    api "com.squareup.retrofit2:retrofit:$dependencie.Retrofit2"
+    api "com.squareup.retrofit2:converter-gson:$dependencie.Retrofit2"
+    api "com.squareup.retrofit2:adapter-rxjava2:$dependencie.Retrofit2"
+    // rx
+    api "io.reactivex.rxjava2:rxjava:$dependencie.RxJava2"
+    api "io.reactivex.rxjava2:rxandroid:$dependencie.RxAndroid"
+
+    // zxing-journeyapps
+    implementation "com.journeyapps:zxing-android-embedded:$dependencie.ZxingEmbedded"
+    // glide
+    implementation "com.github.bumptech.glide:glide:$dependencie.Glide"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$dependencie.Glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$dependencie.Glide"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}
