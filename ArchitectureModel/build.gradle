@@ -26,6 +26,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
@@ -47,76 +56,42 @@ dependencies {
     // rx
     api "io.reactivex.rxjava2:rxjava:$dependencie.RxJava2"
     api "io.reactivex.rxjava2:rxandroid:$dependencie.RxAndroid"
-
-    // zxing-journeyapps
-    implementation "com.journeyapps:zxing-android-embedded:$dependencie.ZxingEmbedded"
     // glide
     implementation "com.github.bumptech.glide:glide:$dependencie.Glide"
     implementation "com.github.bumptech.glide:okhttp3-integration:$dependencie.Glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$dependencie.Glide"
+    // logger
+    implementation "com.orhanobut:logger:$dependencie.logger"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
 
-def siteUrl = "https://github.com/kailin2017/architecture_model"
+def siteUrl = "https://github.com/kailin2017/architecture_model.git"
 def gitUrl = "https://github.com/kailin2017/architecture_model.git"
-def libName = "architecture_model"
 version = "0.0.1"
 group = "com.kailin"
-
-//產生原始碼
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-//產生文件檔
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    options.encoding "UTF-8"
-    options.charSet 'UTF-8'
-    options.author true
-    options.version true
-    options.links siteUrl
-    failOnError false
-}
-//文件檔打包
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-//複製javadoc
-task copyDoc(type: Copy) {
-    from "${buildDir}/docs/"
-    into "docs"
-}
-//上传到jCenter所需要的源码文件
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-// 配置maven库，生成POM.xml文件
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
         pom {
             project {
                 packaging 'aar'
-                name 'baseui'
+                // Add your description here
+                name 'This is a album for Android.'
                 url siteUrl
+                // Set your license
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-                developers {
+                developers { 
                     developer {
-                        id 'kailin2017'
-                        name 'kailin2017'
+                        id 'kailin'
+                        name 'kailin'
                         email 'w22019532@gmail.com'
                     }
                 }
@@ -129,18 +104,29 @@ install {
         }
     }
 }
-
-//上传到JCenter
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
 bintray {
-    user = "kailin2017"    //读取 local.properties 文件里面的 bintray.user
-    key = "4889d319ffe67dd44c8e9b84146621ff05f7f511"   //读取 local.properties 文件里面的 bintray.apikey
+    user = "kailin2017"
+    key = "4889d319ffe67dd44c8e9b84146621ff05f7f511"
     configurations = ['archives']
     pkg {
-        repo = "maven"
-        name = libName    //发布到JCenter上的项目名字，必须填写
-        desc = 'baseui'    //项目描述
+        repo = "architecture_model"
+        name = "architecture_model"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

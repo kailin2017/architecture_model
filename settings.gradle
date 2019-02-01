@@ -1,1 +1,1 @@
-include ':ArchitectureModel'
+include ':ArchitectureModel', ':AppSample'
