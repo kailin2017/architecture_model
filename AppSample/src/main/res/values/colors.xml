@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="AppTheme_ColorPrimary">#673AB7</color>
+    <color name="AppTheme_ColorPrimaryDark">#512DA8</color>
+    <color name="AppTheme_ColorAccent">#FF5252</color>
+    <color name="AppTheme_ColorPrimaryText">#212121</color>
+    <color name="AppTheme_ColorSecondaryText">#757575</color>
+    <color name="AppTheme_ColorDivider">#BDBDBD</color>
+    <color name="AppTheme_ColorIcon">#FFFFFF</color>
+
+    <color name="AppTheme_Dark_ColorPrimary">#673AB7</color>
+    <color name="AppTheme_Dark_ColorPrimaryDark">#512DA8</color>
+    <color name="AppTheme_Dark_ColorAccent">#FF5252</color>
+    <color name="AppTheme_Dark_ColorPrimaryText">#212121</color>
+    <color name="AppTheme_Dark_ColorSecondaryText">#757575</color>
+    <color name="AppTheme_Dark_ColorDivider">#BDBDBD</color>
+    <color name="AppTheme_Dark_ColorIcon">#FFFFFF</color>
 </resources>

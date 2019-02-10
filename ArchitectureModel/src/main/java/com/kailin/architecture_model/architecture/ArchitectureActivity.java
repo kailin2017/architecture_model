@@ -7,38 +7,38 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.kailin.architecture_model.architecture.interfaces.ArchitectureInterface;
-import com.kailin.architecture_model.architecture.interfaces.FragmentInterface;
 import com.kailin.architecture_model.architecture.interfaces.OnRequestPermissionsResult;
 import com.kailin.architecture_model.architecture.interfaces.PermissionInterface;
 import com.kailin.architecture_model.architecture.interfaces.ReceiverInterface;
 import com.kailin.architecture_model.receiver.ShutdownReceiver;
+import com.kailin.architecture_model.util.CheckVersionUtil;
 
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
-public abstract class ArchitectureActivity<B extends ViewDataBinding, VM extends ViewModel>
-        extends AppCompatActivity implements OnRequestPermissionsResult, PermissionInterface, ReceiverInterface, ArchitectureInterface<VM>, FragmentInterface {
+public abstract class ArchitectureActivity<B extends ViewDataBinding, VM extends ArchitectureViewModel>
+        extends AppCompatActivity implements OnRequestPermissionsResult, PermissionInterface, ReceiverInterface, ArchitectureInterface<VM> {
 
     protected B binding;
     protected VM viewModel;
     protected Context context;
-    protected OnRequestPermissionsResult onRequestPermissionsResult;
     private final ArrayList<BroadcastReceiver> broadcastReceivers = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Class<VM> clazz = getViewModelClass();
-        if (clazz != null)
+        if (clazz != null){
             viewModel = ViewModelProviders.of(this).get(getViewModelClass());
+            getLifecycle().addObserver(viewModel);
+        }
         binding = DataBindingUtil.setContentView(this, getLayoutRes());
         binding.setLifecycleOwner(this);
         context = this;
@@ -54,11 +54,13 @@ public abstract class ArchitectureActivity<B extends ViewDataBinding, VM extends
         }
     }
 
-    public void checkPermission(OnRequestPermissionsResult permissionListener, int requestCode, String... permissions) {
-        onRequestPermissionsResult = permissionListener;
+    @Override
+    public void checkPermission(int requestCode, String... permissions) {
+        if(CheckVersionUtil.getInstance().isBelowM())
+            return;
         for (String permission : permissions) {
-            if (ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this, permissions, 0);
+            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
+                requestPermissions(permissions, 0);
                 return;
             }
         }
@@ -79,14 +81,10 @@ public abstract class ArchitectureActivity<B extends ViewDataBinding, VM extends
 
     @Override
     public void onPermissionGranted(int requestCode, String[] permissions, int[] grantResults) {
-        if (onRequestPermissionsResult != null)
-            onRequestPermissionsResult.onPermissionGranted(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
-        if (onRequestPermissionsResult != null)
-            onRequestPermissionsResult.onPermissionDenied(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -104,46 +102,4 @@ public abstract class ArchitectureActivity<B extends ViewDataBinding, VM extends
         super.unregisterReceiver(receiver);
         broadcastReceivers.remove(receiver);
     }
-
-    @Override
-    public void replaceFragment(Fragment fragment) {
-        replaceFragment(fragment, null);
-    }
-
-    @Override
-    public void replaceFragment(Fragment fragment, String TAG) {
-        replaceFragment(getContainerViewId(), fragment, TAG);
-    }
-
-    @Override
-    public void replaceFragment(int layoutId, Fragment fragment, String TAG) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(layoutId, fragment, TAG)
-                .commitAllowingStateLoss();
-    }
-
-    @Override
-    public void addFragment(Fragment fragment) {
-        addFragment(fragment, null);
-    }
-
-    @Override
-    public void addFragment(Fragment fragment, String TAG) {
-        addFragment(getContainerViewId(), fragment, TAG);
-    }
-
-    @Override
-    public void addFragment(int layoutId, Fragment fragment, String TAG) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(layoutId, fragment, TAG)
-                .commitAllowingStateLoss();
-    }
-
-    @Override
-    public void popFragment() {
-        getSupportFragmentManager().popBackStack();
-    }
-
 }

@@ -2,6 +2,7 @@ package com.kailin.architecture_model.architecture;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,29 +13,34 @@ import com.kailin.architecture_model.architecture.interfaces.FragmentInterface;
 import com.kailin.architecture_model.architecture.interfaces.OnRequestPermissionsResult;
 import com.kailin.architecture_model.architecture.interfaces.PermissionInterface;
 import com.kailin.architecture_model.architecture.interfaces.ReceiverInterface;
+import com.kailin.architecture_model.util.CheckVersionUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
-public abstract class ArchitectureFragment<B extends ViewDataBinding, VM extends ViewModel>
-        extends Fragment implements PermissionInterface, ReceiverInterface, ArchitectureInterface<VM>, FragmentInterface {
+public abstract class ArchitectureFragment<B extends ViewDataBinding, VM extends ArchitectureViewModel>
+        extends Fragment implements OnRequestPermissionsResult, PermissionInterface, ReceiverInterface, ArchitectureInterface<VM> {
 
     protected B binding;
     protected VM viewModel;
     protected Context context;
-    protected PermissionInterface permissionInterface;
     protected FragmentInterface fragmentInterface;
     protected ReceiverInterface receiverInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(getViewModelClass());
+        Class<VM> clazz = getViewModelClass();
+        if (clazz != null){
+            viewModel = ViewModelProviders.of(this).get(getViewModelClass());
+            getLifecycle().addObserver(viewModel);
+        }
     }
 
     @Nullable
@@ -52,9 +58,6 @@ public abstract class ArchitectureFragment<B extends ViewDataBinding, VM extends
         if (context instanceof FragmentInterface) {
             fragmentInterface = (FragmentInterface) context;
         }
-        if (context instanceof PermissionInterface) {
-            permissionInterface = (PermissionInterface) context;
-        }
         if (context instanceof ReceiverInterface) {
             receiverInterface = (ReceiverInterface) context;
         }
@@ -62,8 +65,36 @@ public abstract class ArchitectureFragment<B extends ViewDataBinding, VM extends
     }
 
     @Override
-    public void checkPermission(OnRequestPermissionsResult permissionListener, int requestCode, String... permissions) {
-        permissionInterface.checkPermission(permissionListener, requestCode, permissions);
+    public void checkPermission(int requestCode, String... permissions) {
+        if(CheckVersionUtil.getInstance().isBelowM())
+            return;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
+                requestPermissions(permissions, 0);
+                return;
+            }
+        }
+        onPermissionGranted(requestCode, permissions, new int[]{});
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                onPermissionDenied(requestCode, permissions, grantResults);
+                return;
+            }
+        }
+        onPermissionGranted(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(int requestCode, String[] permissions, int[] grantResults) {
+    }
+
+    @Override
+    public void onPermissionDenied(int requestCode, String[] permissions, int[] grantResults) {
     }
 
     @Override
@@ -74,45 +105,5 @@ public abstract class ArchitectureFragment<B extends ViewDataBinding, VM extends
     @Override
     public void unRegisterReceiver(BroadcastReceiver receiver) {
         receiverInterface.unRegisterReceiver(receiver);
-    }
-
-    @Override
-    public void replaceFragment(Fragment fragment) {
-        fragmentInterface.replaceFragment(fragment);
-    }
-
-    @Override
-    public void replaceFragment(Fragment fragment, String TAG) {
-        fragmentInterface.replaceFragment(fragment, TAG);
-    }
-
-    @Override
-    public void replaceFragment(int layoutId, Fragment fragment, String TAG) {
-        fragmentInterface.replaceFragment(layoutId, fragment, TAG);
-    }
-
-    @Override
-    public void addFragment(Fragment fragment) {
-        fragmentInterface.addFragment(fragment);
-    }
-
-    @Override
-    public void addFragment(Fragment fragment, String TAG) {
-        fragmentInterface.addFragment(fragment, TAG);
-    }
-
-    @Override
-    public void addFragment(int layoutId, Fragment fragment, String TAG) {
-        fragmentInterface.addFragment(layoutId, fragment, TAG);
-    }
-
-    @Override
-    public void popFragment() {
-        fragmentInterface.popFragment();
-    }
-
-    @Override
-    public int getContainerViewId() {
-        return fragmentInterface.getContainerViewId();
     }
 }

@@ -1,0 +1,17 @@
+<network-security-config>
+    <!--<base-config>-->
+        <!--<trust-anchors>-->
+            <!--<certificates src="system" />-->
+        <!--</trust-anchors>-->
+    <!--</base-config>-->
+    <!--<domain-config cleartextTrafficPermitted="true">-->
+        <!--<domain includeSubdomains="true">210.242.143.88</domain>-->
+        <!--<domain includeSubdomains="true">210.242.143.89</domain>-->
+        <!--<domain includeSubdomains="true">210.242.143.90</domain>-->
+        <!--<domain includeSubdomains="true">ptx.transportdata.tw</domain>-->
+        <!--<trust-anchors>-->
+            <!--<certificates src="@raw/ptx" />-->
+        <!--</trust-anchors>-->
+    <!--</domain-config>-->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

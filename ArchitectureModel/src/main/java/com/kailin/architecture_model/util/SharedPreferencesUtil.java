@@ -3,7 +3,6 @@ package com.kailin.architecture_model.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
 import com.kailin.architecture_model.encrypt.AESUtil;
 
 import java.util.Set;
@@ -25,7 +24,6 @@ public final class SharedPreferencesUtil {
 
     private final SharedPreferences sharedPreferences;
     private final AESUtil aesDefaultUtil = AESUtil.getInstance();
-    private final Gson gson = new Gson();
 
     private SharedPreferencesUtil(Context context) {
         sharedPreferences = context.getApplicationContext().getSharedPreferences("ArchitectureModel", Context.MODE_PRIVATE);
