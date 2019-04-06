@@ -7,4 +7,6 @@
     <string name="nav_home_subway">捷運</string>
     <string name="nav_home_apps">其他</string>
     <string name="title_activity_maps">Map</string>
+    
+    <string name="operating_interval">%s - %s</string>
 </resources>

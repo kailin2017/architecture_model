@@ -12,7 +12,7 @@ package com.kailin.appSample.data.bus;
  * Bearing (string, optional): 方位角，E:東行;W:西行;S:南行;N:北行;SE:東南行;NE:東北行;SW:西南行;NW:西北行 ,
  * StationID (string, optional): 站牌所屬的站位ID ,
  * StopDescription (string, optional): 站牌詳細說明描述 ,
- * City (string, optional): 站牌權管所屬縣市(相當於市區公車API的City參數)[若為公路/國道客運路線則為空值] ,
+ * BusCity (string, optional): 站牌權管所屬縣市(相當於市區公車API的City參數)[若為公路/國道客運路線則為空值] ,
  * CityCode (string, optional): 站牌權管所屬縣市之代碼(國際ISO 3166-2 三碼城市代碼)[若為公路/國道客運路線則為空值] ,
  * LocationCityCode (string, optional): 站牌位置縣市之代碼(國際ISO 3166-2 三碼城市代碼)[若為公路/國道客運路線則為空值] ,
  * UpdateTime (DateTime): 資料更新日期時間(ISO8601格式:yyyy-MM-ddTHH:mm:sszzz) ,
@@ -169,7 +169,7 @@ public final class BusStop {
                 ", StopPosition=" + StopPosition +
                 ", AuthorityID='" + AuthorityID + '\'' +
                 ", StopUID='" + StopUID + '\'' +
-                ", City='" + City + '\'' +
+                ", BusCity='" + City + '\'' +
                 ", StationID='" + StationID + '\'' +
                 ", Bearing='" + Bearing + '\'' +
                 ", LocationCityCode='" + LocationCityCode + '\'' +

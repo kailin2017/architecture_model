@@ -23,8 +23,6 @@ public class MainActivity extends BaseActivity<MainActivityBinding, MainViewMode
 
     @Override
     public void initBindings() {
-        setSupportActionBar(binding.coordinator.toolbar);
-
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, hostFragment.getNavController());
     }

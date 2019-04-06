@@ -1,4 +1,6 @@
-package com.kailin.appSample.data.bus;
+package com.kailin.appSample.data.bus.version;
+
+import com.kailin.appSample.data.bus.DateTypeConverters;
 
 import java.util.Date;
 import java.util.Objects;
@@ -16,7 +18,7 @@ import androidx.room.TypeConverters;
  * }
  */
 @Entity(tableName = BusVersion.ROOM_TABLE_NAME)
-public final class BusVersion {
+public final class BusVersion implements Comparable<BusVersion> {
 
     public final static String ROOM_TABLE_NAME = "BusVersion";
 
@@ -86,5 +88,19 @@ public final class BusVersion {
     @Override
     public int hashCode() {
         return Objects.hash(BusCity, VersionID);
+    }
+
+
+    @Override
+    public int compareTo(BusVersion busVersion) {
+        int result;
+        if (getVersionID() > busVersion.getVersionID()) {
+            result = 1;
+        } else if (getVersionID() < busVersion.getVersionID()) {
+            result = -1;
+        } else {
+            result = 0;
+        }
+        return result;
     }
 }

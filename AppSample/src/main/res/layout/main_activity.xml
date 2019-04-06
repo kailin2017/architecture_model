@@ -10,11 +10,13 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.MainActivity">
 
-        <include
-            android:id="@+id/coordinator"
-            layout="@layout/main_coordinator"
+        <fragment
+            android:id="@+id/navigationFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/constraint_0dp"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintTop_toTopOf="parent" />
 

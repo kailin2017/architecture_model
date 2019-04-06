@@ -10,53 +10,53 @@ package com.kailin.appSample.data.bus;
  */
 public final class RouteOperator {
 
-    private String OperatorNo;
+    private String OperatorID;
 
-    private NameType Name;
+    private NameType OperatorName;
 
     private String OperatorCode;
 
-    private String OperatorID;
+    private String OperatorNo;
 
-    public String getOperatorNo() {
-        return OperatorNo;
+    public String getOperatorID() {
+        return OperatorID;
     }
 
-    public void setOperatorNo(String OperatorNo) {
-        this.OperatorNo = OperatorNo;
+    public void setOperatorID(String operatorID) {
+        OperatorID = operatorID;
     }
 
-    public NameType getName() {
-        return Name;
+    public NameType getOperatorName() {
+        return OperatorName;
     }
 
-    public void setName(NameType Name) {
-        this.Name = Name;
+    public void setOperatorName(NameType operatorName) {
+        OperatorName = operatorName;
     }
 
     public String getOperatorCode() {
         return OperatorCode;
     }
 
-    public void setOperatorCode(String OperatorCode) {
-        this.OperatorCode = OperatorCode;
+    public void setOperatorCode(String operatorCode) {
+        OperatorCode = operatorCode;
     }
 
-    public String getOperatorID() {
-        return OperatorID;
+    public String getOperatorNo() {
+        return OperatorNo;
     }
 
-    public void setOperatorID(String OperatorID) {
-        this.OperatorID = OperatorID;
+    public void setOperatorNo(String operatorNo) {
+        OperatorNo = operatorNo;
     }
 
     @Override
     public String toString() {
         return "RouteOperator{" +
-                "OperatorNo='" + OperatorNo + '\'' +
-                ", NameType=" + Name +
+                "OperatorID='" + OperatorID + '\'' +
+                ", OperatorName=" + OperatorName +
                 ", OperatorCode='" + OperatorCode + '\'' +
-                ", OperatorID='" + OperatorID + '\'' +
+                ", OperatorNo='" + OperatorNo + '\'' +
                 '}';
     }
 }

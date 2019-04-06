@@ -1,4 +1,6 @@
-package com.kailin.appSample.data.bus;
+package com.kailin.appSample.data.bus.version;
+
+import com.kailin.appSample.data.bus.DateTypeConverters;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +18,10 @@ import io.reactivex.Flowable;
 public interface BusVersionDao {
 
     @Query("SELECT * FROM BUSVERSION WHERE BusCity = :BusCity AND UpdateTime < :UpdateTime")
-    Flowable<BusVersion> getBusVersion(String BusCity, @TypeConverters(DateTypeConverters.class) Date UpdateTime);
+    BusVersion getBusVersion(String BusCity, @TypeConverters(DateTypeConverters.class) Date UpdateTime);
 
     @Query("SELECT * FROM BUSVERSION WHERE BusCity = :BusCity")
-    Flowable<BusVersion> getBusVersion(String BusCity);
+    BusVersion getBusVersion(String BusCity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insert(BusVersion... busVersions);

@@ -1,5 +1,8 @@
 package com.kailin.appSample.data.bus;
 
+import com.kailin.appSample.data.bus.version.BusVersion;
+import com.kailin.appSample.data.bus.version.BusVersionDao;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,18 +21,18 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 public class BusVersionDaoTest {
 
     private BusVersionDao busVersionDao;
-    private BusVersionDatabase busVersionDatabase;
+    private BusDatabase busDatabase;
     private final BusVersion busVersion = new BusVersion();
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
     public void before() {
-        busVersionDatabase = Room
-                .inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(), BusVersionDatabase.class)
+        busDatabase = Room
+                .inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(), BusDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        busVersionDao = busVersionDatabase.busVersionDao();
+        busVersionDao = busDatabase.busVersionDao();
         Date date = Calendar.getInstance().getTime();
         busVersion.setBusCity("Taipei");
         busVersion.setVersionID(10);
@@ -39,7 +42,7 @@ public class BusVersionDaoTest {
 
     @After
     public void after() {
-        busVersionDatabase.close();
+        busDatabase.close();
         busVersionDao = null;
     }
 

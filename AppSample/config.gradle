@@ -11,7 +11,7 @@ ext {
             Architecture    : "2.0.0",
             Navigation      : "1.0.0-alpha11",
             ConstraintLayout: "1.1.2",
-            OkHttp3         : "3.12.1",
+            OkHttp3         : "3.13.1",
             Retrofit2       : "2.5.0",
             RxJava2         : "2.2.5",
             RxAndroid       : "2.0.2",
